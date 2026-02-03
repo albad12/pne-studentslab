@@ -1,4 +1,4 @@
-total = 0
+sums = 0
 for i in range(1, 21):
-    total += i
-print(total)
+    sums += i
+print(sums)
