@@ -1,12 +1,12 @@
 lst = ["AGTACACTGGT", "ACCAGTGTACT","ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG"]
 
 total = 0
+a = 0
+g = 0
+c = 0
+t = 0
 for sequence in lst:
     total += len(sequence)
-    a = 0
-    g = 0
-    c = 0
-    t = 0
     for base in sequence:
         if base == "A":
             a += 1
@@ -17,9 +17,12 @@ for sequence in lst:
         elif base == "T":
             t += 1
 
-
-                     # Mirar en casa esto A = 15
 print("Total number of bases:",total)
+print("A:", a)
+print("G:", g)
+print("C:", c)
+print("T:", t)
+
 
 
 f = open("dna.txt.", "r")
