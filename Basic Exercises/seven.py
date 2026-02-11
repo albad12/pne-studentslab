@@ -15,4 +15,13 @@ else:
 
 print("Databases grade:",student["grades"]["Databases"])
 
-total =
+total = 0
+for grade in student["grades"].values():
+    total += grade
+average = round(total / len(student["grades"]), 2)
+
+print("Average grade:", average)
+
+print("Subject grades:")
+for key,item in student["grades"].items():
+    print(key, ":", item)
