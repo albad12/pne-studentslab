@@ -31,14 +31,19 @@ lines = f.readlines()
 f.close()
 print("From file:", lines)
 
-for sequence in lines:
-    sequence = sequence.strip() #removes spaces and newline characters at the end of the string
+from dna_count import dna_bases_iterator
 
 with open("dna.txt.", "r") as f:
     lines = f.readlines()        #one we process the line and go outside we don't need to call the close function
-
-
+    bases = {"A": 0, "C": 0, "T": 0, "G": 0}
+for sequence in lines:
+    sequence = sequence.strip() #Remove space and newline characters at the end of the string
+    total += len(sequence)
+    result = count_bases(sequence)
+    for key in result:
+        bases[key] += result
 
 #from dna_count import count_bases
 #if __name__ == "__main__":
     # main()
+
