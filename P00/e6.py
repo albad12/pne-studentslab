@@ -7,5 +7,5 @@ for base in u5:
         lst.append(base)
 
 seq = ''.join(lst)
-print(seq)
-print(seq_reverse(seq, 20))
+print("Fragment:",seq)
+print("Reversed fragment:",seq_reverse(seq, 20))
