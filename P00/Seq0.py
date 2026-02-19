@@ -38,6 +38,8 @@ def seq_reverse(seq, n):
     new_seq = ''.join(lst)
     return new_seq
 
+def seq_complement(seq):
+
 
 
 

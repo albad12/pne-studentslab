@@ -1,6 +1,6 @@
 from Seq0 import seq_read_fasta
 
-sequence = seq_read_fasta("/home/alumnos/albadiaz/PycharmProjects/pne-studentslab/SO4/Sequences/U5_sequence.fa")
+sequence = seq_read_fasta("Sequences/U5_sequence.fa")
 print(sequence)
 
 lst = []
