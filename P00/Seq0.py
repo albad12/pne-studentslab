@@ -46,5 +46,11 @@ def seq_complement(seq):
            new_seq.append(bases[base])
     return new_seq
 
-
+def seq_fragment(seq,n):
+    lst = []
+    for base in seq:
+        if len(lst) < n:
+            lst.append(base)
+    seq = ''.join(lst)
+    return seq
 
