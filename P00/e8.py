@@ -15,4 +15,4 @@ for name,seq in sequences:
             max_count = n
             max_base = base
 
-    print("Gene", name, "Most frequent base:", max_base, "(value:", max_count,")")
+    print("Gene", name, ":Most frequent base:", max_base, "(value:", max_count,")")
