@@ -5,12 +5,14 @@ ada = seq_read_fasta("Sequences/ADA_sequence.fa")
 frat = seq_read_fasta("Sequences/FRAT1_sequence.fa")
 fxn = seq_read_fasta("Sequences/FXN_sequence.fa")
 
-bases = ["A", "T", "G", "C"]
 sequences = [("U5",u5), ("ADA",ada), ("FRAT", frat), ("FXN",fxn)]
-
-print("-----| Exercise 4 |------")
 for name,seq in sequences:
-    print("Gene",name)
-    for base in bases:
-        print(base, ":",seq_count_base(seq, base))
+    value = seq_count(seq)
+    max_count = 0
+    max_base = ""
+    for base,n in value.items():
+        if n > max_count:
+            max_count = n
+            max_base = base
 
+    print("Gene", name, "Most frequent base:", max_base, "(value:", max_count,")")

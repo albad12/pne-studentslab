@@ -7,6 +7,6 @@ fxn = seq_read_fasta("Sequences/FXN_sequence.fa")
 
 print("-----| Exercise 3 |------")
 
-lst = [u5, ada, frat, fxn]
-for sequence in lst:
-    print("Gene -> Length:", seq_len(sequence))
+sequences = [("U5",u5), ("ADA",ada), ("FRAT", frat), ("FXN",fxn)]
+for name,seq in sequences:
+    print("Gene", name, "-> Length:", seq_len(seq))

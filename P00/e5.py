@@ -5,8 +5,8 @@ ada = seq_read_fasta("Sequences/ADA_sequence.fa")
 frat = seq_read_fasta("Sequences/FRAT1_sequence.fa")
 fxn = seq_read_fasta("Sequences/FXN_sequence.fa")
 
-lst = [u5, ada, frat, fxn]
+sequences = [("U5",u5), ("ADA",ada), ("FRAT", frat), ("FXN",fxn)]
 print("-----| Exercise 5 |------")
-for seq in lst:
-    print(seq_count(seq))
+for name,seq in sequences:
+    print("Gene", name, ":",seq_count(seq))
 

@@ -22,10 +22,9 @@ def seq_count_base(seq, base):
 
 def seq_count(seq):
     d = {"A": 0, "T":0, "G": 0, "C": 0}
-    d["A"] = seq_count_base(seq,"A")
-    d["T"] = seq_count_base(seq,"T")
-    d["G"] = seq_count_base(seq, "G")
-    d["C"] = seq_count_base(seq,"C")
+    for base in seq:
+       if base in d:
+           d[base] += 1
     return d
 
 def seq_reverse(seq, n):
