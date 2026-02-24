@@ -39,7 +39,12 @@ def seq_reverse(seq, n):
     return new_seq
 
 def seq_complement(seq):
-
+    bases = {"A": "T", "T": "A", "G": "C", "C": "G" }
+    new_seq = []
+    for base in seq:
+        if base in bases:
+           new_seq.append(bases[base])
+    return new_seq
 
 
 
