@@ -78,7 +78,7 @@ class Seq:
                 new_seq = ''.join(seq)
         return new_seq
 
-    def seq_read_fasta(self, filename):
+    def read_fasta(self, filename):
 
         content = Path(filename).read_text()
         content_new = content.split("\n")
