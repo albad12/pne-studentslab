@@ -11,11 +11,9 @@ class Seq:
         else:
             for letter in strbases:
                 if letter not in lst:
-                    strbases = "ERROR"
-                elif letter in lst:
-                    strbases = strbases
+                    self.strbases = "ERROR"
 
-            if strbases == "ERROR":
+            if self.strbases == "ERROR":
                 print("INVALID sequence!")
             else:
                 print("New sequence created!")
@@ -24,9 +22,9 @@ class Seq:
         return self.strbases
 
     def len(self):
-        if self.strbases == "NULL":
+        if self.strbases == "ERROR":
             result = 0
-        elif self.strbases == "ERROR":
+        elif self.strbases == "NULL":
             result = 0
         else:
             result = len(self.strbases)

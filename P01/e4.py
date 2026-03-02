@@ -6,6 +6,8 @@ s1 = Seq()
 s2 = Seq("ACTGA")
 s3 = Seq("Invalid sequence")
 
-print("Sequence 1: (Length:", s1.len(), ")", s1 )
-print("Sequence 2: (Length:", s2.len(), ")", s2 )
-print("Sequence 3: (Length:", s3.len(), ")", s3 )
+lst = [s1, s2, s3]
+n = 1
+for seq in lst:
+    print("Sequence", n, ": (Length:", seq.len(), ")", seq)
+    n += 1

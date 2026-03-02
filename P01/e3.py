@@ -7,6 +7,8 @@ s2 = Seq("ACTGA")
 s3 = Seq("Invalid sequence")
 
 print("")
-print(f"Sequence 1: {s1}")
-print(f"Sequence 2: {s2}")
-print(f"Sequence 3: {s3}")
+lst = [s1, s2, s3]
+n = 1
+for seq in lst:
+    print("Sequence", n, ":", seq)
+    n += 1

@@ -7,12 +7,10 @@ s2 = Seq("ACTGA")
 s3 = Seq("Invalid sequence")
 
 bases = ["A", "T", "G", "C"]
-print("Sequence 1: (Length:", s1.len(), ")", s1 )
-for base in bases:
-    print(base, ":", s1.count(base))
-print("Sequence 2: (Length:", s2.len(), ")", s2 )
-for base in bases:
-    print(base, ":", s2.count(base))
-print("Sequence 3: (Length:", s3.len(), ")", s3 )
-for base in bases:
-    print(base, ":", s3.count(base))
+lst = [s1, s2, s3]
+n = 1
+for seq in lst:
+    print("Sequence", n,": (Length:", seq.len(), ")", seq)
+    for base in bases:
+        print(base, ":", seq.count(base))
+    n += 1
