@@ -1,6 +1,6 @@
 # __init__(self, strbases = None) is initial default(by default is None       s = Seq() => s = Seq(None)
 # s = Seq("ATCG")
-
+from pathlib import Path
 class Seq:
     def __init__(self, strbases = None):
         self.strbases = strbases
@@ -77,8 +77,15 @@ class Seq:
         return new_seq
 
     def read_fasta(self, filename):
-
         content = Path(filename).read_text()
         content_new = content.split("\n")
         result = ("".join(content_new[1::]))
-        return result
+        self.strbases = result
+        return self.strbases
+
+    def seq_count(self):
+        d = {"A": 0, "T": 0, "G": 0, "C": 0}
+        for base in self.strbases:
+            if base in d:
+                d[base] += 1
+        return d

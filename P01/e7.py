@@ -7,4 +7,4 @@ s3 = Seq("Invalid sequence")
 lst = [s1, s2, s3]
 n = 1
 for seq in lst:
-    print("Sequence", n, ": (Length:", seq.len(), ")", seq, "\n", seq.count_dict(), "\n", seq.reverse())
+    print("Sequence", n, ": (Length:", seq.len(), ")", seq, "\n Bases:", seq.count_dict(), "\n Rev:", seq.reverse())
