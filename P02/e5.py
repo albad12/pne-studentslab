@@ -15,14 +15,18 @@ seq = s.read_fasta(frat)
 
 for fragment in seq:
     n = 0
+    start = 0
     while n < 5:
         lst = []
+        count = 0
         for base in fragment:
-            if len(lst) <= 10:
+            if count >= start and count < start + 10:
                 lst.append(base)
         frg = ''.join(lst)
         n += 1
+        start += 10
         print(f"Fragment {n}: {frg}")
+
 
 
 
