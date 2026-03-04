@@ -26,7 +26,8 @@ for fragment in seq:
         n += 1
         start += 10
         print(f"Fragment {n}: {frg}")
-
+        response = c.talk(frg)
+        print(f"Server response: {response}")
 
 
 
