@@ -80,7 +80,7 @@ class Seq:
         content = Path(filename).read_text()
         content_new = content.split("\n")
         result = ("".join(content_new[1::]))
-        self.strbases = result
+        self.strbases = result.replace("\n", "")
         return self.strbases
 
     def seq_count(self):
