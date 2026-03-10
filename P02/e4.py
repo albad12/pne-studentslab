@@ -8,6 +8,7 @@ print(f"-----| Practice {practice}, Exercise {exercise} |------")
 ip = "212.128.255.75"
 port = 8080
 c = Client(ip, port)
+print(c)
 seqs = {"U5": "Sequences/U5_sequence.fa",
         "ADA": "Sequences/ADA_sequence.fa",
         "FRAT": "Sequences/FRAT1_sequence.fa"}
