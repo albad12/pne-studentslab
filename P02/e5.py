@@ -1,34 +1,28 @@
 from Client0 import Client
 from Seq1 import Seq
 
+
 practice = 2
 exercise = 5
 print(f"-----| Practice {practice}, Exercise {exercise} |------")
 
-ip = "212.128.255.75"
+ip = "127.0.0.1"
 port = 8080
 c = Client(ip, port)
 s = Seq()
 frat = "Sequences/FRAT1_sequence.fa"
 seq = s.read_fasta(frat)
 
+print(f"Gene FRAT1:{s}")
 
-for fragment in seq:
-    n = 0
-    start = 0
-    while n < 5:
-        lst = []
-        count = 0
-        for base in fragment:
-            if count >= start and count < start + 10:
-                lst.append(base)
-        frg = ''.join(lst)
-        n += 1
-        start += 10
-        print(f"Fragment {n}: {frg}")
-        response = c.talk(frg)
-        print(f"Server response: {response}")
+seq = str(s)
+message = ("Sending FRAT1 Gene to the server, in fragments of 10 bases...")
+c.talk(message)
 
+for i in range(5):
+    fragment = seq[i * 10:(i + 1) * 10]
+    print(f" Fragment {i + 1}: {fragment}")
+    c.talk(f"Fragment {i + 1}: {fragment}")
 
 
 
