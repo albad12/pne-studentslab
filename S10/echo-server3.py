@@ -1,5 +1,5 @@
 import socket
-import termcolor
+
 
 port = 8080
 ip = "212.128.255.75"
@@ -25,12 +25,15 @@ while True:
         msg_raw = cs.recv(2048)
         msg = msg_raw.decode()
         print(f"Connection{count}: {client_ip_port}")
-        clients.append(client_ip_port)
         print(f"Received Message: {msg}")
         cs.send(f"ECHO: {msg}".encode())
         cs.close()
-        if count == 2:
+        clients.append(client_ip_port)
+        count += 1
+        if count > 2:
             print(f"The following clients has connected to the server:")
-            for client in clients:
-                print(f"Client{count}: {client}")
+            for i,client in clients:
+                print(f"Client{i}: {client}")
             break
+        ls.close()
+        print("Server has finished.")
