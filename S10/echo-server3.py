@@ -35,5 +35,5 @@ while True:
             for i,client in clients:
                 print(f"Client{i}: {client}")
             break
-        ls.close()
+
         print("Server has finished.")
