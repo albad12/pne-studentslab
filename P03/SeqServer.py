@@ -11,7 +11,8 @@ ls.listen()
 seqs = [ "AATGTCGGCCCA",
          "TGTGATGATGATGC",
          "ATGCGTCGCGCGTAGTAGTATG",
-         "ATGTGATGTGGTC"]
+         "ATGTGATGTGGTC",
+         "TGCGAGTGCGAGAGAGAGAGCGTT"]
 
 seqs2 = {"U5": "Sequences/U5_sequence.fa",
         "ADA": "Sequences/ADA_sequence.fa",
