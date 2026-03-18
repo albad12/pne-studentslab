@@ -72,7 +72,7 @@ ls.bind((IP, PORT))
 # -- Become a listening socket
 ls.listen()
 
-print("Green server configured!")
+print("Pink server configured!")
 
 # --- MAIN LOOP
 while True:
