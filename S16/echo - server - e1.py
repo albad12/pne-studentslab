@@ -15,10 +15,28 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         path = url_path.path  # we get it from here
         arguments = parse_qs(url_path.query)
         print(arguments)
-        if path == "/" or path == "/echo" or arguments == "{}" :
+        if path == "/":
             contents = Path("html/form - 1.html").read_text()
         elif path == "/echo":
-            contents = Path("html/form-e1.html").read_text().replace("msg", arguments["msg"][0])
+            body = """
+              <!DOCTYPE html>
+              <html lang="en" dir="ltr">
+                <head>
+                  <meta charset="utf-8">
+                  <title>Message Received</title>
+                </head>
+                <body>
+                  <h1>Message Received</h1>
+        """
+       for key, value in arguments:
+           if key == "msg":
+               body += f"""
+                    <p>{value[0]}</p>
+                    <p><p>
+                    <a href="http://127.0.0.1:8080/">Main Page</a>
+
+    """
+        contents = "\n" + body
         else:
             contents = Path("html/error.html").read_text()
         self.send_response(200)
