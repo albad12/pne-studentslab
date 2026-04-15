@@ -5,8 +5,8 @@ from urllib.parse import parse_qs, urlparse
 
 PORT = 8080
 socketserver.TCPServer.allow_reuse_address = True
-class TestHandler(http.server.BaseHTTPRequestHandler):
 
+class TestHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         url_path = urlparse(self.path)
         path = url_path.path
@@ -14,7 +14,6 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         if path == "/":
             self.send_response(200)
             contents = Path("html/form-e1.html").read_text()
-
         elif path == "/echo":
             self.send_response(200)
             body = """
@@ -27,14 +26,15 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             <body>
                 <h1>Message Received</h1>
             """
-
             if "msg" in arguments:
                 message = arguments["msg"][0]
+                if "upper" in arguments:
+                    message = message.upper()
                 body += f"<p>{message}</p>"
             else:
                 body += "<p>No message received</p>"
-
             body += """
+                <br>
                 <a href="/">Back to main page</a>
             </body>
             </html>
@@ -57,5 +57,3 @@ with socketserver.TCPServer(("", PORT), Handler) as httpd:
     except KeyboardInterrupt:
         print("\nStopped by the user")
         httpd.server_close()
-
-
