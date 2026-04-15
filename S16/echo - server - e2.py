@@ -13,7 +13,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         arguments = parse_qs(url_path.query)
         if path == "/":
             self.send_response(200)
-            contents = Path("html/form-e1.html").read_text()
+            contents = Path("html/form-e2.html").read_text()
         elif path == "/echo":
             self.send_response(200)
             body = """
@@ -35,7 +35,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 body += "<p>No message received</p>"
             body += """
                 <br>
-                <a href="/">Back to main page</a>
+                <a href="/">Main page</a>
             </body>
             </html>
             """

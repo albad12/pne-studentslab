@@ -35,7 +35,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 body += "<p>No message received</p>"
 
             body += """
-                <a href="/">Back to main page</a>
+                <a href="/">Main page</a>
             </body>
             </html>
             """
