@@ -1,6 +1,5 @@
 import http.server
 import socketserver
-from importlib.resources import contents
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 import jinja2 as j
@@ -23,11 +22,14 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                      "CGTCGTGATGATGATCGT",
                      "ATCTGTCGTAGTAGT",
                      "ATGTCGTAGTGTGTATG"]
-        U5 = Path
-        ADA = Path
-        FRAT1 = Path
-        RNU6_269P = Path
-        FXN = Path
+
+        U5 = Path("Sequences/U5_sequence.fa").read_text()
+        ADA = Path("Sequences/ADA_sequence.fa").read_text()
+        FRAT1 = Path("Sequences/FRAT1_sequence.fa").read_text()
+        RNU6_269P = Path("Sequences/269P_sequence.fa").read_text()
+        FXN = Path("Sequences/FXN_sequence.fa").read_text()
+
+        sequences2 = {"U5": U5, "ADA": ADA, "FRAT1": FRAT1, "RNU6_269P": RNU6_269P, "FXN": FXN}
         if path == "/":
            self.send_response(200)
            contents = Path("html/index.html").read_text()
@@ -35,18 +37,58 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             self.send_response(200)
             contents = Path("html/ping.html").read_text()
         elif path == "/get":
+            self.send_response(200)
             if "n" in arguments:
                 n = int(arguments["n"][0])
                 if 0 <= n <= 4:
                     seq = sequences[n]
-            self.send_response(200)
-            contents =
+                else:
+                    seq = "Invalid option"
+            contents = read_html_file("get.html").render(n=n, mssg=seq)
         elif path == "/gene":
-            if "name" and "sequence" in arguments:
+            self.send_response(200)
+            if "name" in arguments:
                 name = arguments["name"][0]
-                sequence = arguments["sequence"[0]
-                for key, value in items():
-                    if key = name
+                if name in sequences2:
+                    seq = sequences2[name].split("\n")
+                    seq = seq[1:]
+                    seq = "".join(seq)
+                else:
+                    seq = "Invalid gene"
+            contents = read_html_file("gene.html").render(name=name, mssg=seq)
+        elif path == "/operation":
+            self.send_response(200)
+            if "seq" in arguments and "op" in arguments:
+                seq = arguments["seq"][0]
+                op = arguments["op"][0]
+                if op == "rev":
+                    result = seq[::-1]
+                elif op == "comp":
+                    bases = {"A": "T", "T": "A","G": "C", "C": "G" }
+                    lst = []
+                    for base in seq:
+                        base = bases[base]
+                        lst.append(base)
+                    seq2 = "".join(lst)
+                    result = seq2
+                elif op == "info":
+                    length = len(seq)
+                    def bases (base):
+                        count = 0
+                        for b in seq:
+                            if b == base:
+                                count += 1
+                        return (count / length) * 100
+                    result = (
+                        f"Total length: {length},"
+                        f"A: {bases('A')} "
+                        f"C: {bases('C')} "
+                        f"G: {bases('G')}"
+                    f"T: {bases('T')}"
+                )
+                else:
+                    result = "Invalid operator"
+                contents = read_html_file("operation.html").render(mssg=seq, operation=op, info=result)
         else:
             self.send_response(404)
             contents = Path("html/error.html").read_text()
