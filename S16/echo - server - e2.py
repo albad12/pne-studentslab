@@ -5,7 +5,6 @@ from urllib.parse import parse_qs, urlparse
 
 PORT = 8080
 socketserver.TCPServer.allow_reuse_address = True
-
 class TestHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         url_path = urlparse(self.path)
@@ -43,7 +42,6 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         else:
             self.send_response(404)
             contents = Path("html/error.html").read_text()
-
         self.send_header('Content-Type', 'text/html')
         self.send_header('Content-Length', str(len(contents.encode())))
         self.end_headers()
