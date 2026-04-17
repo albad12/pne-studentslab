@@ -58,6 +58,9 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             contents = read_html_file("gene.html").render(name=name, mssg=seq)
         elif path == "/operation":
             self.send_response(200)
+            seq = ""
+            op = ""
+            result = ""
             if "seq" in arguments and "op" in arguments:
                 seq = arguments["seq"][0]
                 op = arguments["op"][0]
@@ -66,9 +69,11 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 elif op == "comp":
                     bases = {"A": "T", "T": "A","G": "C", "C": "G" }
                     lst = []
+                    seq = seq.upper()
                     for base in seq:
-                        base = bases[base]
-                        lst.append(base)
+                        if base in bases:
+                            base = bases[base]
+                    lst.append(base)
                     seq2 = "".join(lst)
                     result = seq2
                 elif op == "info":
@@ -84,14 +89,14 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                         f"A: {bases('A')} "
                         f"C: {bases('C')} "
                         f"G: {bases('G')}"
-                    f"T: {bases('T')}"
-                )
+                        f"T: {bases('T')}"
+                        )
                 else:
                     result = "Invalid operator"
-                contents = read_html_file("operation.html").render(mssg=seq, operation=op, info=result)
         else:
-            self.send_response(404)
-            contents = Path("html/error.html").read_text()
+            result = "Missing parameters"
+        contents = read_html_file("operation.html").render(mssg=seq, operation=op, info=result)
+
 
         self.send_header('Content-Type', 'text/html')
         self.send_header('Content-Length', str(len(contents.encode())))
