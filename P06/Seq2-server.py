@@ -58,44 +58,38 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             contents = read_html_file("gene.html").render(name=name, mssg=seq)
         elif path == "/operation":
             self.send_response(200)
-            seq = ""
-            op = ""
-            result = ""
-            if "seq" in arguments and "op" in arguments:
-                seq = arguments["seq"][0]
-                op = arguments["op"][0]
-                if op == "rev":
-                    result = seq[::-1]
-                elif op == "comp":
-                    bases = {"A": "T", "T": "A","G": "C", "C": "G" }
-                    lst = []
-                    seq = seq.upper()
-                    for base in seq:
-                        if base in bases:
-                            base = bases[base]
-                    lst.append(base)
-                    seq2 = "".join(lst)
-                    result = seq2
-                elif op == "info":
-                    length = len(seq)
-                    def bases (base):
-                        count = 0
-                        for b in seq:
-                            if b == base:
-                                count += 1
-                        return (count / length) * 100
-                    result = (
-                        f"Total length: {length},"
-                        f"A: {bases('A')} "
-                        f"C: {bases('C')} "
-                        f"G: {bases('G')}"
-                        f"T: {bases('T')}"
-                        )
-                else:
-                    result = "Invalid operator"
-        else:
-            result = "Missing parameters"
-        contents = read_html_file("operation.html").render(mssg=seq, operation=op, info=result)
+            seq = arguments["seq"][0]
+            op = arguments["op"][0]
+            if op == "rev":
+                result = seq[::-1]
+            elif op == "comp":
+                bases = {"A": "T", "T": "A","G": "C", "C": "G" }
+                lst = []
+                seq = seq.upper()
+                for base in seq:
+                    if base in bases:
+                        base = bases[base]
+                lst.append(base)
+                seq2 = "".join(lst)
+                result = seq2
+            elif op == "info":
+                length = len(seq)
+                def bases (base):
+                    count = 0
+                    for b in seq:
+                        if b == base:
+                            count += 1
+                    return (count / length) * 100
+                result = (
+                    f"Total length: {length},"
+                    f"A: {bases('A')} "
+                    f"C: {bases('C')} "
+                    f"G: {bases('G')}"
+                    f"T: {bases('T')}"
+                    )
+            else:
+                result = "Invalid operator"
+            contents = read_html_file("operation.html").render(mssg=seq, operation=op, info=result)
 
 
         self.send_header('Content-Type', 'text/html')
