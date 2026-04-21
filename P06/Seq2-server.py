@@ -1,5 +1,6 @@
 import http.server
 import socketserver
+from importlib.resources import contents
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 import jinja2 as j
@@ -8,11 +9,11 @@ PORT = 8080
 socketserver.TCPServer.allow_reuse_address = True
 class TestHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
+        contents = ""
         url_path = urlparse(self.path)
         path = url_path.path
-        print(path)
         arguments = parse_qs(url_path.query)
-        print(arguments)
+
         def read_html_file(filename):
             contents = Path("html/" + filename).read_text()
             contents = j.Template(contents)
@@ -58,8 +59,8 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             contents = read_html_file("gene.html").render(name=name, mssg=seq)
         elif path == "/operation":
             self.send_response(200)
-            seq = arguments["seq"][0]
-            op = arguments["op"][0]
+            seq = arguments.get("msg", [""])[0]
+            op = arguments.get("op", [""])[0].lower()
             if op == "rev":
                 result = seq[::-1]
             elif op == "comp":
@@ -69,7 +70,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 for base in seq:
                     if base in bases:
                         base = bases[base]
-                lst.append(base)
+                        lst.append(base)
                 seq2 = "".join(lst)
                 result = seq2
             elif op == "info":
@@ -79,14 +80,14 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                     for b in seq:
                         if b == base:
                             count += 1
-                    return (count / length) * 100
+                    return round((count / length), 2) * 100
                 result = (
-                    f"Total length: {length},"
-                    f"A: {bases('A')} "
-                    f"C: {bases('C')} "
-                    f"G: {bases('G')}"
-                    f"T: {bases('T')}"
-                    )
+                    f"Total length: {length}\n"
+                    f"A: {bases('A')}%\n "
+                    f"C: {bases('C')}%\n "
+                    f"G: {bases('G')}%\n "
+                    f"T: {bases('T')}%\n"
+                )
             else:
                 result = "Invalid operator"
             contents = read_html_file("operation.html").render(mssg=seq, operation=op, info=result)
