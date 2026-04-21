@@ -1,6 +1,5 @@
 import http.server
 import socketserver
-from importlib.resources import contents
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 import jinja2 as j
@@ -82,8 +81,8 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                             count += 1
                     return round((count / length), 2) * 100
                 result = (
-                    f"Total length: {length}\n"
-                    f"A: {bases('A')}%\n "
+                    f" Total length: {length}\n"
+                    f" A: {bases('A')}%\n "
                     f"C: {bases('C')}%\n "
                     f"G: {bases('G')}%\n "
                     f"T: {bases('T')}%\n"
