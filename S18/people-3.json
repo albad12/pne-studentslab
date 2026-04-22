@@ -1,5 +1,4 @@
-{ "people": [
-  {
+{
     "Firstname": "María",
     "Lastname": "Medranda Benito",
     "age": 18,
@@ -13,34 +12,4 @@
         "type": "office"
       }
     ]
-  },
-  {   "Firstname": "Troll",
-    "Lastname": "Face",
-    "age": 87,
-    "phoneNumber": [
-      {
-        "number": "1212",
-        "type": "home"
-      },
-      {
-        "number": "3434",
-        "type": "office"
-      }
-    ]
-  },
-  {
-    "Firstname": "Sax",
-    "Lastname": "Guy",
-    "age": 34,
-    "phoneNumber": [
-      {
-        "number": "2121",
-        "type": "home"
-      },
-      {
-        "number": "4242",
-        "type": "office"
-      }
-    ]
-  }
-]}
+}
