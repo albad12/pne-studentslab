@@ -14,6 +14,7 @@ conn = http.client.HTTPSConnection(SERVER)
 conn.request("GET", ENDPOINT + PARAMS)
 response = conn.getresponse()
 data = json.loads(response.read().decode())
+print(f"Response received!: {response.status} {response.reason}\n")
 
 if data["ping"] == 1:
     print("ALIVE!")
