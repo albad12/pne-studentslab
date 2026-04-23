@@ -1,6 +1,7 @@
 import http. client
+import json
 
-genes = {"FRAT": "ENSG00000165879",
+genes = {"FRAT1": "ENSG00000165879",
          "ADA": "ENSG00000196839",
          "FXN": "ENSG00000165060",
          "RNU6_269P": "ENSG00000212379",
@@ -12,9 +13,9 @@ genes = {"FRAT": "ENSG00000165879",
          "ANK2": "ENSG00000145362"
          }
 
+gene = input("Write the gene name: ")
 SERVER = 'rest.ensembl.org'
 ENDPOINT = '/sequence/id/'
-gene = str(input("Write the gene name: "))
 PARAMS = f"{genes[gene]}?content-type=application/json"
 URL = SERVER + ENDPOINT + PARAMS
 
@@ -25,24 +26,36 @@ print(f"URL: {URL}")
 conn = http.client.HTTPSConnection(SERVER)
 conn.request("GET", ENDPOINT + PARAMS)
 response = conn.getresponse()
-resp = response.read().decode()
+data = json.loads(response.read().decode())
 print(f"Response received!: {response.status} {response.reason}\n")
-
 print(f"Gene: {gene}")
-print(f"Description: {resp.split(" ")[1].split("\n")[0]}")
+print(f"Description: {data["desc"]}")
 print(f"New sequence created!")
-seq = resp.split(" ")[1].split("\n")[1]
-length = len(seq)
-def bases (base):
+seq = data['seq']
+print(f"Total lenght: {len(seq)}")
+
+def count(seq, base):
     count = 0
-    for b in seq:
-        if b == base:
+    for a in seq:
+        if a == base:
             count += 1
-            return round((count / length), 2) * 100
-result = (
-        f" Total length: {length}\n"
-        f" A: {bases('A')}%\n "
-        f"C: {bases('C')}%\n "
-        f"G: {bases('G')}%\n "
-        f"T: {bases('T')}%\n"
-    )
+    return f"{base}: {count} ({round((count / len(seq)) * 100, 1)})%"
+def max(seq):
+    max_n = 0
+    max_base = ""
+    bases = {"A": 0,"C": 0,"G": 0,"T": 0}
+    for b, n in bases.items():
+        if b in seq:
+            n += 1
+
+            if n > max_n:
+                max_n = n
+                max_base = b
+    return max_base
+
+print(f"{count(seq, "A")}\n"
+      f"{count(seq, "C")}\n"
+      f"{count(seq, "G")}\n"
+      f"{count(seq, "T")}")
+
+print(f"Most frequent Base: {max(seq)}")

@@ -1,4 +1,4 @@
-genes = {"FRAT": "ENSG00000165879",
+genes = {"FRAT1": "ENSG00000165879",
          "ADA": "ENSG00000196839",
          "FXN": "ENSG00000165060",
          "RNU6_269P": "ENSG00000212379",

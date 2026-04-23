@@ -1,6 +1,7 @@
 import http. client
+import json
 
-genes = {"FRAT": "ENSG00000165879",
+genes = {"FRAT1": "ENSG00000165879",
          "ADA": "ENSG00000196839",
          "FXN": "ENSG00000165060",
          "RNU6_269P": "ENSG00000212379",
@@ -14,7 +15,7 @@ genes = {"FRAT": "ENSG00000165879",
 
 SERVER = 'rest.ensembl.org'
 ENDPOINT = '/sequence/id/'
-PARAMS = f"{genes["MIR633"]}??type=genomic;content-type=text/x-fasta"
+PARAMS = f"{genes["MIR633"]}?content-type=application/json"
 URL = SERVER + ENDPOINT + PARAMS
 
 print()
@@ -24,12 +25,12 @@ print(f"URL: {URL}")
 conn = http.client.HTTPSConnection(SERVER)
 conn.request("GET", ENDPOINT + PARAMS)
 response = conn.getresponse()
-resp = response.read().decode()
+data = json.loads(response.read().decode())
 print(f"Response received!: {response.status} {response.reason}\n")
-print(f"Gene: {"MIR633"}")
-print(f"Description: {resp.split(" ")[1].split("\n")[0]}")
-print(f"Bases: {resp.split(" ")[1].split("\n")[1]}")
 
+print(f"Gene: {"MIR633"}")
+print(f"Description: {data["desc"]}")
+print(f"Bases: {data['seq']}")
 
 
 
