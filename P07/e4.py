@@ -47,9 +47,10 @@ def max(seq):
     for b, n in bases.items():
         if b in seq:
             n += 1
-            if n > max_n:
-                max_n = n
-                max_base = b
+            for b, n in bases.items():
+                if n > max_n:
+                    max_n = n
+                    max_base = b
     return max_base
 
 print(f"{count(seq, "A")}\n"
