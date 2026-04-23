@@ -40,16 +40,19 @@ for gene, stable_id in genes.items():
             if a == base:
                 count += 1
         return f"{base}: {count} ({round((count / len(seq)) * 100, 1)})%"
+
     def max(seq):
         max_n = 0
         max_base = ""
-        bases = {"A": 0,"C": 0,"G": 0,"T": 0}
+        bases = {"A": 0, "C": 0, "G": 0, "T": 0}
         for b, n in bases.items():
-            if b in seq:
-                n += 1
-                if n > max_n:
-                    max_n = n
-                    max_base = b
+            for a in seq:
+                if a == b:
+                    n += 1
+            if n > max_n:
+                max_n = n
+                max_base = b
+
         return max_base
 
     print(f"{count(seq, "A")}\n"
