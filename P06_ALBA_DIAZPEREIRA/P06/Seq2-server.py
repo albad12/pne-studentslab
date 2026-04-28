@@ -1,6 +1,5 @@
 import http.server
 import socketserver
-from importlib.resources import contents
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 import jinja2 as j
