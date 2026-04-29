@@ -28,15 +28,23 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             SERVER = 'rest.ensembl.org'
             ENDPOINT = '/info/'
             PARAMS = f"species?content-type=application/json"
-            # conditon for if lim or not but this is the code
             conn = http.client.HTTPSConnection(SERVER)
             conn.request("GET", ENDPOINT + PARAMS)
             response = conn.getresponse()
             data = json.loads(response.read().decode())
-            print(f"Response received!: {response.status} {response.reason}\n")
-            specie = data["species"]
-            for i, dictspecies in enumerate(specie):
-                print(dictspecies["display_name"])
+            species_list = data["species"]
+            limit = arguments.get("limit", [None])[0]
+            if limit:
+                limit = int(limit)
+            species = []
+            count = 0
+            for specie in species_list:
+                if limit is None or count < limit:
+                    species.append(specie["display_name"])
+                    count += 1
+
+            contents = "\n".join(species)
+
         elif path == "karyotype":
             specie = input(str("Enter the species name: "))
             SERVER = 'rest.ensembl.org'
