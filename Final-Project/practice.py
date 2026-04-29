@@ -27,18 +27,18 @@ conn.request("GET", ENDPOINT + PARAMS)
 response = conn.getresponse()
 data = json.loads(response.read().decode())
 print(f"Response received!: {response.status} {response.reason}\n")
-
+print(data)
 
 print(data['id'])
 print(data['seq'])
 seq = data['seq']
 print(f"Total lenght: {len(seq)}")
 def info(seq):
-    print(seq[0])
-    print(seq[-1])
-    print(len(seq))
-    print(data["id"])
-
+    print(f"Start: {seq[0]}")
+    print(f"End: {seq[-1]}")
+    print(f"Length:{len(seq)}")
+    print(f"id: {data["id"]}")
+info(seq)
 def count(seq, base):
     count = 0
     for a in seq:
