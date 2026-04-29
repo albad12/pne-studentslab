@@ -17,4 +17,4 @@ for i, region in enumerate(top_level):
     if coord == "chromosome":
         chromo = region["name"]
         if chromo == chromosome:
-            print(region["length"])
+            print(f"{region["length"]}")
