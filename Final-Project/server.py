@@ -22,7 +22,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
         if path == "/":
            self.send_response(200)
            contents = Path("html/index.html").read_text()
-        elif path == "/listspecies":
+        elif path == "/listSpecies":
             self.send_response(200)
             SERVER = 'rest.ensembl.org'
             ENDPOINT = '/info/'
@@ -32,9 +32,10 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             response = conn.getresponse()
             data = json.loads(response.read().decode())
             species_list = data["species"]
-            limit = arguments.get("limit", [None])[0]
-            if limit:
-                limit = int(limit)
+            if "limit" in arguments:
+                limit = int(arguments["limit"][0])
+            else:
+                limit = None
             species = []
             count = 0
             for specie in species_list:
@@ -43,33 +44,56 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                     count += 1
             result = "\n".join(species)
             contents = read_html_file("species.html").render(total=count, limit=limit, species=result)
-        elif path == "karyotype" or path == "/chromosomeLength":
+        elif path == "/karyotype" :
             self.send_response(200)
-            specie = input(str("Enter the species name: "))
-            SERVER = 'rest.ensembl.org'
-            ENDPOINT = '/info/'
-            PARAMS = f"assembly/{specie}?content-type=application/json"
+            if "species" in arguments:
+                specie = arguments["species"][0]
+            else:
+                specie = None
+            if not specie:
+                contents = Path("html/error.html")
+            else:
+                specie = input(str("Enter the species name: "))
+                SERVER = 'rest.ensembl.org'
+                ENDPOINT = '/info/'
+                PARAMS = f"assembly/{specie}?content-type=application/json"
 
-            conn = http.client.HTTPSConnection(SERVER)
-            conn.request("GET", ENDPOINT + PARAMS)
-            response = conn.getresponse()
-            data = json.loads(response.read().decode())
-            print(f"Response received!: {response.status} {response.reason}\n")
-            kar = data["karyotype"]
-            kart = []
-            for i in kar:
-                kart.append(i)
-            result = "\n".join(kart)
-            contents = read_html_file("karyotype.html").render(chromosomes=result)
-            chromosome = str(input("Enter the chromosome: "))
-            top_level = data["top_level_region"]
-            for i, region in enumerate(top_level):
-                coord = region["coord_system"]
-                if coord == "chromosome":
-                    chromo = region["name"]
-                    if chromo == chromosome:
-                        result = region["length"]
-            contents = read_html_file("chromosome.html").render(length=result)
+                conn = http.client.HTTPSConnection(SERVER)
+                conn.request("GET", ENDPOINT + PARAMS)
+                response = conn.getresponse()
+                data = json.loads(response.read().decode())
+                print(f"Response received!: {response.status} {response.reason}\n")
+                if "karyotype" in data:
+                    kar = data["karyotype"]
+                else:
+                    kar = []
+                if len(kar) == 0:
+                    contents = Path("html/error.html")
+                else:
+                    result = "\n".join(kar)
+                    contents = read_html_file("karyotype.html").render(chromosomes=result)
+        elif path == "/chromosomeLength":
+            self.send_response(200)
+            if "species" in arguments:
+                specie = arguments["species"][0]
+            else:
+                specie = None
+            if "chromo" in arguments:
+                chromosome = arguments["chromo"][0]
+            else:
+                chromosome = None
+            if not specie or not chromosome:
+                contents = Path("html/error.html")
+            else:
+                chromosome = str(input("Enter the chromosome: "))
+                top_level = data["top_level_region"]
+                for i, region in enumerate(top_level):
+                    coord = region["coord_system"]
+                    if coord == "chromosome":
+                        chromo = region["name"]
+                        if chromo == chromosome:
+                            result = region["length"]
+                contents = read_html_file("chromosome.html").render(length=result)
         else:
             self.send_response(404)
             contents = Path("html/error.html")
