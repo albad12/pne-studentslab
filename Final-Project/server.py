@@ -37,13 +37,14 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             else:
                 limit = None
             species = []
+            total = len(species_list)
             count = 0
             for specie in species_list:
                 if limit is None or count < limit:
                     species.append(specie["common_name"])
                     count += 1
-            result = "\n".join(species)
-            contents = read_html_file("species.html").render(total=count, limit=limit, species=result)
+            result = "<p></p>".join(species)
+            contents = read_html_file("species.html").render(total=total, limit=limit, species=result)
         elif path == "/karyotype" :
             self.send_response(200)
             if "species" in arguments:
@@ -53,7 +54,6 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             if not specie:
                 contents = Path("html/error.html")
             else:
-                specie = input(str("Enter the species name: "))
                 SERVER = 'rest.ensembl.org'
                 ENDPOINT = '/info/'
                 PARAMS = f"assembly/{specie}?content-type=application/json"
@@ -70,7 +70,7 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
                 if len(kar) == 0:
                     contents = Path("html/error.html")
                 else:
-                    result = "\n".join(kar)
+                    result = "<p></p>".join(kar)    #html doesn't read "/n"
                     contents = read_html_file("karyotype.html").render(chromosomes=result)
         elif path == "/chromosomeLength":
             self.send_response(200)
@@ -85,15 +85,40 @@ class TestHandler(http.server.BaseHTTPRequestHandler):
             if not specie or not chromosome:
                 contents = Path("html/error.html")
             else:
-                chromosome = str(input("Enter the chromosome: "))
-                top_level = data["top_level_region"]
-                for i, region in enumerate(top_level):
+                SERVER = 'rest.ensembl.org'
+                ENDPOINT = '/info/'
+                PARAMS = f"assembly/{specie}?content-type=application/json"
+
+                conn = http.client.HTTPSConnection(SERVER)
+                conn.request("GET", ENDPOINT + PARAMS)
+                response = conn.getresponse()
+                data = json.loads(response.read().decode())
+                print(f"Response received!: {response.status} {response.reason}\n")
+                result = None
+                if "top_level_region" in arguments:
+                    top_level = data["top_level_region"]
+                else:
+                    top_level = []
+                for region in top_level:
                     coord = region["coord_system"]
                     if coord == "chromosome":
                         chromo = region["name"]
                         if chromo == chromosome:
                             result = region["length"]
-                contents = read_html_file("chromosome.html").render(length=result)
+                if result is None:
+                    contents = Path("html/error.html")
+                else:
+                    contents = read_html_file("chromosome.html").render(length=result)
+        elif path == "/geneLookup":
+            pass
+        elif path == "/geneSeq":
+            pass
+        elif path == "geneInfo":
+            pass
+        elif path == "/geneCalc":
+            pass
+        elif path == "/geneList":
+            pass
         else:
             self.send_response(404)
             contents = Path("html/error.html")
