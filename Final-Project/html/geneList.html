@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NAMES OF OVERLAP GENES</title>
+</head>
+<body style="background-color: #dbeafe">
+The names of the genes that overlap a region in the chromosome {{chromo}} are:
+{% for gene in names %}
+<p>{{gene}}</p>
+{% endfor %}
+<a href="/">Main Page</a>
+</body>
+</html>
